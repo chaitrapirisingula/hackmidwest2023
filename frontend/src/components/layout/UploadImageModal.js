@@ -34,10 +34,10 @@ export default function UploadImageModal() {
     formData.append('file_upload', photo)
     
     try {
-      const endpoint = "http://localhost:8000/test";
+      const endpoint = "http://localhost:8000/upload_file";
       const response = await fetch(endpoint, {
         method: "POST",
-        // body: formData
+        body: formData
       });
 
       if (!response.ok) {
