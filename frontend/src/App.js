@@ -1,26 +1,41 @@
-import logo from './logo.png';
-import UploadImageModal from './UploadImageModal';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
+import { Security, SecureRoute, LoginCallback } from '@okta/okta-react';
+import NavBar from './components/layout/NavBar';
+import Admin from './components/pages/Admin';
+import User from './components/pages/User';
+import Home from './components/pages/Home';
+import Login from './components/auth/Login';
 import './App.css';
 
 function App() {
+
+  const navigate = useNavigate();
+  const restoreOriginalUri = (_oktaAuth,  originalUri) => {
+    navigate(toRelativeUrl(originalUri || '/', window.location.origin));
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Saving Face
-        </a>
-        <UploadImageModal />
-      </header>
-    </div>
+    <Router>
+      <Security
+        oktaAuth="https://dev-jm8z17sdj6ijt88b.us.auth0.com/"
+        restoreOriginalUri={restoreOriginalUri}
+      >
+      <div className="App">
+        <NavBar/>
+        <Routes>
+          <Route path="/" element={<Home/>} />
+          <SecureRoute path="/admin" element={<Admin/>} />
+          <Route path="/user" element={<User/>} />
+          <Route
+            path="/login"
+            element={<Login baseUrl="https://dev-jm8z17sdj6ijt88b.us.auth0.com" />}
+          />
+          <Route path="/implicit/callback" component={LoginCallback} />
+        </Routes>
+      </div>
+      </Security>
+    </Router>
   );
 }
 
