@@ -30,7 +30,23 @@ export default function UploadImageModal() {
   }
 
   const handleClick = async () => {
-    // do stuff
+    const formData = new FormData();
+    formData.append('file_upload', photo)
+    
+    try {
+      const endpoint = "http://localhost:8000/test";
+      const response = await fetch(endpoint, {
+        method: "POST",
+        // body: formData
+      });
+
+      if (!response.ok) {
+        console.error('An error occured!');
+      }
+
+    } catch(error) {
+      console.error(error)
+    }
   }
 
   return (

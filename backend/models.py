@@ -2,6 +2,11 @@ import uuid
 from typing import Optional
 from pydantic import BaseModel, Field
 
+class FileOptions(BaseModel):
+    FileName: str = Field(...)
+    FileDesc: str = Field(...)
+    FileType: Optional[str]
+
 class User(BaseModel):
     # match to okta
     id: str = Field(default_factory=uuid.uuid4, alias="_id")
