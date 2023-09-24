@@ -30,7 +30,7 @@ const Admin = () => {
     try {
         setLoading(true);
         const endpoint = "http://127.0.0.1:8000/users/api/v1/profile/admin/upload";
-        const response = await fetch(endpoint, {
+        await fetch(endpoint, {
             method: "POST",
             body: formData,
         })
@@ -38,7 +38,9 @@ const Admin = () => {
         .then((data) => { 
           console.log(data);
           setFoundUser(data);
-          
+          if (data.length === 1) {
+            setNoMatch(true);
+          }
         } );
 
     } catch(error) {
@@ -96,8 +98,8 @@ const Admin = () => {
           disabled={!photoURL} onClick={uploadImage}>
           Find Match
       </button>
-      {foundUser ? <User patient={foundUser} style={{ backgroundColor: 'lightblue', fontSize: '18px', width:'200px' }} /> : <></>}
-      {noMatch ? <p style={{ fontSize: '24px', color: 'red', marginTop: '20px' }}>No match found.</p> : <></>}
+      {foundUser && foundUser.length > 1 ? <User patient={foundUser} style={{ backgroundColor: 'lightblue', fontSize: '18px', width:'200px' }} /> : <></>}
+      {noMatch && !loading ? <p style={{ fontSize: '24px', color: 'red', marginTop: '20px' }}>No match found.</p> : <></>}
   </div>
   
   

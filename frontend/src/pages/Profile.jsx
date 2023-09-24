@@ -20,7 +20,8 @@ const Profile = () => {
   const handleChange = (e) => {
     if (e.target.files[0]) {
       setPhoto(e.target.files[0]);
-      setFileName(e.target.files[0].name);
+      e.target.files[0].name = userInfo._id;
+      setFileName(userInfo._id);
       setPhotoURL(URL.createObjectURL(e.target.files[0]));
       setSuccess(false);
     }
@@ -74,7 +75,7 @@ const Profile = () => {
         .then(response => response.json())
         .then((data) => { 
           setUserInfo(data);
-          if (data.admin === true) return navigate('/admin');
+          if (data.admin === '1') return navigate('/admin');
         });
 
     } catch(error) {
