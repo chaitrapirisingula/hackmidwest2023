@@ -36,12 +36,11 @@ const Admin = () => {
     
     try {
         setLoading(true);
-        const endpoint = "http://localhost:8000/api/v1/admin/upload";
+        const endpoint = "http://localhost:8000/users/api/v1/admin/upload";
         const response = await fetch(endpoint, {
             method: "POST",
             body: formData
         });
-        // Verify this!!!!
         console.log(response);
         setFoundUser(response);
 
