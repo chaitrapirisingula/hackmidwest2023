@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useOktaAuth } from '@okta/okta-react';
-import { Icon } from 'semantic-ui-react';
+import { Button, Icon } from 'semantic-ui-react';
 import User from '../components/User';
 
 const Admin = () => {
@@ -22,8 +22,6 @@ const Admin = () => {
     }
   }
 
-
-
   const uploadImage = async () => {
     let formData = new FormData();
     
@@ -35,22 +33,18 @@ const Admin = () => {
         const response = await fetch(endpoint, {
             method: "POST",
             body: formData,
-              
-        });
-        // Verify this!!!!
-        console.log(response.json());
-        setFoundUser(response);
-
-        if (!response.ok) {
-          console.error('An error occured!');
-          setNoMatch(true);
-        }
+        })
+        .then(response => response.json())
+        .then((data) => { 
+          console.log(data);
+          setFoundUser(data);
+        } );
 
     } catch(error) {
       console.error(error);
       setNoMatch(true);
     } finally {
-        setLoading(false);
+      setLoading(false);
     }
   }
 
@@ -75,8 +69,8 @@ const Admin = () => {
             {photoURL ? <img src={photoURL} alt={fileName} width={156} height={156}/> : <Icon name="upload" size='large' />}
             <p>{fileName}</p>
         </form>
-        <button disabled={loading || !photo} onClick={uploadImage}>Find Match</button>
-        {foundUser ? <User data={foundUser} /> : <></>}
+        <Button disabled={loading || !photo} onClick={uploadImage}>Find Match</Button>
+        {foundUser ? <User patient={foundUser} /> : <></>}
         {noMatch ? <h1>No match found.</h1> : <></>}
     </div>
   );
