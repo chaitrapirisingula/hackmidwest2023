@@ -13,7 +13,7 @@ class User(BaseModel):
     admin: str = Field(...)
     firstName: str = Field(...)
     lastName: str = Field(...)
-    # # M/F
+    # M/F
     sex: str = Field(...)
     email: str = Field(...)
     phone: str = Field(...)
@@ -23,7 +23,7 @@ class User(BaseModel):
     bloodType: str = Field(...)
     weight: str = Field(...)
     height: str = Field(...)
-    # # list 
+    # list 
     allergies: str = Field(...)
     conditions: str = Field(...)
     surgeries: str = Field(...)

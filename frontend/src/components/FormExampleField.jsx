@@ -43,9 +43,35 @@ const FormExampleField = () => {
 
     // You can perform further actions with the formData object here, such as sending it to an API or processing it in your application.
 
-    // For now, let's log the data to the console
-    console.log(formData);
-  };
+  //   const fd = new FormData();
+  //   fd.append('file_upload', photo)
+  //   console.log(formData)
+    
+  //   try {
+  //       setLoading(true);
+  //       const endpoint = "http://localhost:8000/users/insert_user";
+  //       const response = await fetch(endpoint, {
+  //           method: "POST",
+  //           body: formData
+  //       });
+  //       console.log(response);
+  //       setFoundUser(response);
+
+  //       if (!response.ok) {
+  //         console.error('An error occured!');
+  //         setNoMatch(true);
+  //       }
+
+  //   } catch(error) {
+  //     console.error(error);
+  //     setNoMatch(true);
+  //   } finally {
+  //       setLoading(false);
+  //   }
+  }
+  // For now, let's log the data to the console
+  // console.log(formData);
+  
 
   return (
     <Form>
