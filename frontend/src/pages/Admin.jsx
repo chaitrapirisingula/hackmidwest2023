@@ -1,13 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useOktaAuth } from '@okta/okta-react';
-import { Button, Icon } from 'semantic-ui-react';
+import { Icon } from 'semantic-ui-react';
 import User from '../components/User';
-import Loading from '../components/Loading';
 
 const Admin = () => {
-  const navigate = useNavigate();
-
   const { authState, oktaAuth } = useOktaAuth();
   const [userInfo, setUserInfo] = useState(false);
 
@@ -17,10 +13,6 @@ const Admin = () => {
   const [fileName, setFileName] = useState('No file selected.');
   const [foundUser, setFoundUser] = useState(null);
   const [noMatch, setNoMatch] = useState(false);
-
-  if (authState && !authState.isAuthenticated) {
-    return navigate('../');
-  }
 
   const handleChange = (e) => {
     if (e.target.files[0]) {
@@ -83,9 +75,8 @@ const Admin = () => {
             {photoURL ? <img src={photoURL} alt={fileName} width={156} height={156}/> : <Icon name="upload" size='large' />}
             <p>{fileName}</p>
         </form>
-        <Button secondary disabled={loading || !photo} onClick={uploadImage}>Find Match</Button>
+        <button disabled={loading || !photo} onClick={uploadImage}>Find Match</button>
         {foundUser ? <User data={foundUser} /> : <></>}
-        {loading ? <Loading/> : <></>}
         {noMatch ? <h1>No match found.</h1> : <></>}
     </div>
   );
