@@ -125,7 +125,7 @@ const Admin = () => {
             disabled={!photoURL} onClick={uploadImage}>
             Find Match
         </button>
-        {foundUser ? <User patient={foundUser} style={{ backgroundColor: 'lightblue', fontSize: '18px', width:'200px' }} /> : <></>}
+        {foundUser && foundUser.firstName ? <User patient={foundUser} style={{ backgroundColor: 'lightblue', fontSize: '18px', width:'200px' }} /> : <></>}
         {noMatch && !loading ? <p style={{ fontSize: '24px', color: 'red', marginTop: '20px' }}>No match found.</p> : <></>}
     </div> : <></>}
     </div>
