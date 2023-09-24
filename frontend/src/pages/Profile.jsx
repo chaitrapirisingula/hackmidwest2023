@@ -4,52 +4,11 @@ import { useOktaAuth } from '@okta/okta-react';
 import { Button, Header, Icon } from 'semantic-ui-react';
 import User from '../components/User';
 
-const temp = [
-  {
-    "firstName": "Jack",
-    "lastName": "Rankin",
-    "admin": true,
-    "sex": "Male",
-    "email": "john.doe@example.com",
-    "phone": "+1234567890",
-    "address": "123 Main St, City, Country",
-    "dob": "1990-05-15",
-    "race": "Caucasian",
-    "bloodType": "A+",
-    "weight": "70 kg",
-    "height": "175 cm",
-    "allergies": ["Peanuts", "Shellfish"],
-    "conditions": ["Hypertension", "Diabetes"],
-    "medication": ["Lisinopril", "Insulin"],
-    "surgeries": ["Appendectomy", "Knee Surgery"],
-    "emergencyContacts": ["Jane Doe (+11234567890)", "Emergency Contact 2 (+19876543210)"]
-  },
-  {
-    "firstName": "Chaitra",
-    "lastName": "Pirisingula",
-    "admin": true,
-    "sex": "Female",
-    "email": "jane.smith@example.com",
-    "phone": "+9876543210",
-    "address": "456 Elm St, City, Country",
-    "dob": "1985-08-25",
-    "race": "African American",
-    "bloodType": "B-",
-    "weight": "65 kg",
-    "height": "160 cm",
-    "allergies": ["None"],
-    "conditions": ["Asthma"],
-    "medication": ["Albuterol"],
-    "surgeries": ["None"],
-    "emergencyContacts": ["John Smith (+11234567890)"]
-  }
-];
-
 const Profile = () => {
   const navigate = useNavigate();
 
   const { authState, oktaAuth } = useOktaAuth();
-  const [userInfo, setUserInfo] = useState(temp[0]);
+  const [userInfo, setUserInfo] = useState(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -58,14 +17,32 @@ const Profile = () => {
       setUserInfo(null);
     } else {
       // get user information from `/userinfo` endpoint
-      setLoading(true);
       oktaAuth.getUser().then((info) => {
-        setUserInfo(info);
-        setLoading(false);
-        if (temp[0].admin === true) return navigate('/admin');
+        getUser(info);
       });
     }
   }, [authState, oktaAuth]); // Update if authState changes
+
+  const getUser = async (user) => {
+    setLoading(true);
+    try {
+        const endpoint = "http://127.0.0.1:8000/users/api/v1/get_user/" + user.sub;
+        console.log(user);
+        await fetch(endpoint, {
+            method: "GET",
+        })
+        .then(response => response.json())
+        .then((data) => { 
+          setUserInfo(data);
+          if (data.admin === true) return navigate('/admin');
+        });
+
+    } catch(error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   if (!userInfo || loading) {
     return (
@@ -80,7 +57,7 @@ const Profile = () => {
       <div>
         <Header as="h1">
           <Icon name="drivers license" />
-            {userInfo.name}
+            {userInfo.firstName + ' ' + userInfo.lastName}
         </Header>
         <p>
           Welcome back!
@@ -90,7 +67,7 @@ const Profile = () => {
         {/* send params of user id */}
         <Button content='Edit Information' icon='edit' labelPosition='left' onClick={() => navigate('/edit')}/>
         <br/><br/>
-        <User patient={temp[0]} />
+        <User patient={userInfo} />
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useOktaAuth } from '@okta/okta-react';
 import { Link } from 'react-router-dom';
-import { Container, Icon, Image, Menu } from 'semantic-ui-react';
+import { Container, Menu } from 'semantic-ui-react';
 import logo from './logo.png';
 
 const Navbar = () => {

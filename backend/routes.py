@@ -32,7 +32,7 @@ def insert_user(request: Request, user: User = Body(...)):
     )
     return created_user
 
-@router.get("/{id}", response_description="Get a user by id", response_model=User)
+@router.get("/api/v1/get_user/${id}", response_description="Get a user by id", response_model=User)
 def find_user(id: str, request: Request):
     if (user := request.app.database["users"].find_one({"_id": id})) is not None:
         return user
