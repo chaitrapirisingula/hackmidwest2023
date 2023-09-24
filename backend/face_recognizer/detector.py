@@ -3,6 +3,7 @@ import pickle
 import face_recognition
 from collections import Counter
 
+
 DEFAULT_ENCODINGS_PATH = Path("face_recognizer/output/encodings.pkl")
 
 Path("face_recognizer/training").mkdir(exist_ok=True)
@@ -88,6 +89,7 @@ def add_image(image, name, model = "hog", encodings_location: Path = DEFAULT_ENC
     # image.save(f'training/{name}/{image.filename}')
     if len(recognize_faces(image)):
         print("Image already exists")
+        return "Not added"
     else:
         with encodings_location.open(mode="rb") as f:
             loaded_encodings = pickle.load(f)
@@ -104,6 +106,8 @@ def add_image(image, name, model = "hog", encodings_location: Path = DEFAULT_ENC
         name_encodings = {"names": names, "encodings": encodings}
         with encodings_location.open(mode="wb") as f:
             pickle.dump(name_encodings, f)
+        
+        return "Added"
         
 
 
