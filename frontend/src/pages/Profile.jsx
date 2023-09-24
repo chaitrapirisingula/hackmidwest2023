@@ -1,49 +1,73 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useOktaAuth } from '@okta/okta-react';
 import { Header, Icon } from 'semantic-ui-react';
 import User from '../components/User';
 
-const temp = {
-  "_id": "066de609-b04a-4b30-b46c-32537c7f1f6e",
-  "admin" : "0",
-  "firstName": "Chaitra",
-  "lastName": "Pirisingula",
-  "image": "...",
-  "sex" : "...",
-  "email":  "...",
-  "phone":  "...",
-  "address":  "...",
-  "birthday":  "...",
-  "race":  "...",
-  "bloodType":  "...",
-  "weight":  "...",
-  "height":  "...",
-  "allergies":  "...",
-  "conditions":  "...",
-  "surgeries":  "...",
-  "medication":  "...",
-  "contact": "..."
-};
+const temp = [
+  {
+    "firstName": "Jack",
+    "lastName": "Rankin",
+    "admin": "0",
+    "sex": "Male",
+    "email": "john.doe@example.com",
+    "phone": "+1234567890",
+    "address": "123 Main St, City, Country",
+    "dob": "1990-05-15",
+    "race": "Caucasian",
+    "bloodType": "A+",
+    "weight": "70 kg",
+    "height": "175 cm",
+    "allergies": ["Peanuts", "Shellfish"],
+    "conditions": ["Hypertension", "Diabetes"],
+    "medication": ["Lisinopril", "Insulin"],
+    "surgeries": ["Appendectomy", "Knee Surgery"],
+    "emergencyContacts": ["Jane Doe (+11234567890)", "Emergency Contact 2 (+19876543210)"]
+  },
+  {
+    "firstName": "Chaitra",
+    "lastName": "Pirisingula",
+    "admin": "1",
+    "sex": "Female",
+    "email": "jane.smith@example.com",
+    "phone": "+9876543210",
+    "address": "456 Elm St, City, Country",
+    "dob": "1985-08-25",
+    "race": "African American",
+    "bloodType": "B-",
+    "weight": "65 kg",
+    "height": "160 cm",
+    "allergies": ["None"],
+    "conditions": ["Asthma"],
+    "medication": ["Albuterol"],
+    "surgeries": ["None"],
+    "emergencyContacts": ["John Smith (+11234567890)"]
+  }
+];
 
 const Profile = () => {
+  const navigate = useNavigate();
+
   const { authState, oktaAuth } = useOktaAuth();
-  const [userInfo, setUserInfo] = useState(temp);
+  const [userInfo, setUserInfo] = useState(temp[0]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (!authState || !authState.isAuthenticated) {
       // When user isn't authenticated, forget any user info
       setUserInfo(null);
     } else {
-      // get name and id from this 
-      // setUserInfo(authState.idToken.claims);
       // get user information from `/userinfo` endpoint
-      /*oktaAuth.getUser().then((info) => {
+      setLoading(true);
+      oktaAuth.getUser().then((info) => {
         setUserInfo(info);
-      });*/
+        setLoading(false);
+        if (temp[1].admin == true) return navigate('/admin');
+      });
     }
   }, [authState, oktaAuth]); // Update if authState changes
 
-  if (!userInfo) {
+  if (!userInfo || loading) {
     return (
       <div>
         <p>Fetching user profile...</p>
@@ -56,14 +80,14 @@ const Profile = () => {
       <div>
         <Header as="h1">
           <Icon name="drivers license" />
-            {userInfo.firstName + ' ' + userInfo.lastName}
+            {userInfo.name}
         </Header>
         <p>
           Welcome back!
           Below is your current health information. 
           This information is protected and only accessible to you and medical professionals.
         </p>
-        <User userInfo={userInfo} />
+        <User patient={temp[0]} />
       </div>
     </div>
   );

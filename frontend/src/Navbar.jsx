@@ -23,11 +23,6 @@ const Navbar = () => {
             <Link to="/">Saving Face</Link>
           </Menu.Item>
           {authState.isAuthenticated && (
-            <Menu.Item id="profile-button">
-              <Link to="/profile">Profile</Link>
-            </Menu.Item>
-          )}
-          {authState.isAuthenticated && (
             <Menu.Item id="logout-button" onClick={logout}>Logout</Menu.Item>
           )}
           {!authState && !authState.isAuthenticated && (
