@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useOktaAuth } from '@okta/okta-react';
-import { Header, Icon, Table } from 'semantic-ui-react';
+import { Header, Icon } from 'semantic-ui-react';
+import User from '../components/User';
 
 const temp = {
   "_id": "066de609-b04a-4b30-b46c-32537c7f1f6e",
@@ -62,27 +63,7 @@ const Profile = () => {
           Below is your current health information. 
           This information is protected and only accessible to you and medical professionals.
         </p>
-        <Table>
-          <thead>
-            <tr>
-              <th>Claim</th>
-              <th>Value</th>
-            </tr>
-          </thead>
-          <tbody>
-            {Object.entries(userInfo).map((claimEntry) => {
-              const claimName = claimEntry[0];
-              const claimValue = claimEntry[1];
-              const claimId = `claim-${claimName}`;
-              return (
-                <tr key={claimName}>
-                  <td>{claimName}</td>
-                  <td id={claimId}>{claimValue.toString()}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </Table>
+        <User userInfo={userInfo} />
       </div>
     </div>
   );

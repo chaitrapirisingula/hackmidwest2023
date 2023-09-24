@@ -16,7 +16,9 @@ const Home = () => {
     } else {
       oktaAuth.getUser().then((info) => {
         setUserInfo(info);
+        // do this if not admin
         return navigate('/profile');
+        // navigate to admin if admin
       });
     }
   }, [authState, oktaAuth]); // Update if authState changes
