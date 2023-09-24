@@ -37,7 +37,7 @@ def encode_known_faces(
 
 
 def recognize_faces(
-    image_location: str,
+    image_location: str = None,
     model: str = "hog",
     encodings_location: Path = DEFAULT_ENCODINGS_PATH, image = None
 ) -> None:
