@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useOktaAuth } from '@okta/okta-react';
-import { Header, Icon } from 'semantic-ui-react';
+import { Button, Header, Icon } from 'semantic-ui-react';
 import User from '../components/User';
 
 const temp = [
   {
     "firstName": "Jack",
     "lastName": "Rankin",
-    "admin": "0",
+    "admin": true,
     "sex": "Male",
     "email": "john.doe@example.com",
     "phone": "+1234567890",
@@ -27,7 +27,7 @@ const temp = [
   {
     "firstName": "Chaitra",
     "lastName": "Pirisingula",
-    "admin": "1",
+    "admin": true,
     "sex": "Female",
     "email": "jane.smith@example.com",
     "phone": "+9876543210",
@@ -62,7 +62,7 @@ const Profile = () => {
       oktaAuth.getUser().then((info) => {
         setUserInfo(info);
         setLoading(false);
-        if (temp[1].admin == true) return navigate('/admin');
+        if (temp[0].admin === true) return navigate('/admin');
       });
     }
   }, [authState, oktaAuth]); // Update if authState changes
@@ -87,6 +87,9 @@ const Profile = () => {
           Below is your current health information. 
           This information is protected and only accessible to you and medical professionals.
         </p>
+        {/* send params of user id */}
+        <Button content='Edit Information' icon='edit' labelPosition='left' onClick={() => navigate('/edit')}/>
+        <br/><br/>
         <User patient={temp[0]} />
       </div>
     </div>

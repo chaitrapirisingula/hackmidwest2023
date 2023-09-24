@@ -8,11 +8,6 @@ import json
 
 router = APIRouter()
 
-@router.get("/get_users", response_description="List all users", response_model=List[User])
-async def list_users(request: Request):
-    users = list(request.app.database["users"].find())
-    return users
-
 @router.put("/{id}", response_description="Update a user", response_model=User)
 def update_user(id: str, request: Request, user):
     user = json.loads(user)
@@ -28,7 +23,6 @@ def update_user(id: str, request: Request, user):
 
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"User with ID {id} not found")
 
-
 @router.post("/insert_user", response_description="insert user", response_model=User)
 def insert_user(request: Request, user: User = Body(...)):
     user = jsonable_encoder(user)
@@ -40,14 +34,13 @@ def insert_user(request: Request, user: User = Body(...)):
 
 @router.post("/api/v1/profile/upload")
 async def upload_image(image: UploadFile):
-    
+
     try:
         img_path = image.filename.split(".")
         add_image(image.file, img_path[0] )
     except Exception as e:
         print(e)
-        return {"Image Failed To Upload"}
-    
+        return {"Image Failed To Upload"} 
     return {"Image Uploaded Successfully"}
 
 
@@ -57,8 +50,8 @@ async def test_me():
     print('hello')
 
 @router.post("/api/v1/profile/upload")
-async def upload_image(file_upload: UploadFile, response: Response, request: Request):
-    
+async def upload_image(image: UploadFile, response: Response, request: Request):
+
     try:
         add_image(image.file, image.filename )
     except Exception as e:
@@ -86,6 +79,6 @@ async def upload_image( response: Response, request: Request, image: UploadFile 
 
         response.status_code = status.HTTP_404_NOT_FOUND
         return {"User Not Found"}
-    
+
     return user_data
 
