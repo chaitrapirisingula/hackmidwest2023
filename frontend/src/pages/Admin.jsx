@@ -22,19 +22,23 @@ const Admin = () => {
     }
   }
 
+
+
   const uploadImage = async () => {
-    const formData = new FormData();
-    formData.append('file_upload', photo)
+    let formData = new FormData();
+    
+    formData.append('image', photo)
     
     try {
         setLoading(true);
-        const endpoint = "http://localhost:8000/upload_file";
+        const endpoint = "http://127.0.0.1:8000/users/api/v1/profile/admin/upload";
         const response = await fetch(endpoint, {
             method: "POST",
-            body: formData
+            body: formData,
+              
         });
         // Verify this!!!!
-        console.log(response);
+        console.log(response.json());
         setFoundUser(response);
 
         if (!response.ok) {

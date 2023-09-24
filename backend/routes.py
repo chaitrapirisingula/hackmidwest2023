@@ -1,9 +1,10 @@
-from fastapi import APIRouter, Body, Request, Response, HTTPException, status, File, UploadFile, Depends, Response
+from fastapi import APIRouter, Body, Request, Response, HTTPException, status, File, UploadFile, Depends, Response, Form
 from fastapi.encoders import jsonable_encoder
-from typing import List
+from typing import List, Optional, Annotated
 from models import User, UserUpdate, FileOptions
 from face_recognizer.detector import add_image, recognize_faces
 import json
+
 
 router = APIRouter()
 
@@ -49,18 +50,14 @@ async def upload_image(image: UploadFile):
     
     return {"Image Uploaded Successfully"}
 
-@router.post('/upload_file')
-async def upload_image(file_upload: UploadFile):
-    print(file_upload)
-    data = await file_upload.read()
-    print(data)
+
 
 @router.post('/test')
 async def test_me():
     print('hello')
 
 @router.post("/api/v1/profile/upload")
-async def upload_image(image: UploadFile, response: Response, request: Request):
+async def upload_image(file_upload: UploadFile, response: Response, request: Request):
     
     try:
         add_image(image.file, image.filename )
@@ -73,19 +70,20 @@ async def upload_image(image: UploadFile, response: Response, request: Request):
 
 
 @router.post("/api/v1/profile/admin/upload")
-async def upload_image(image: UploadFile, response: Response, request: Request):
+async def upload_image( response: Response, request: Request, image: UploadFile = File(...)):
     
     try: 
-        print("Here")
+        print("FUCKTHISSHIT")
         names = recognize_faces(image = image.file )
         print(names)
         user_data =  request.app.database["users"].find_one(
        {"_id": names[0]}
         )
-
+        print(user_data)
+        return user_data
 
     except Exception as e:
-        print(e)
+
         response.status_code = status.HTTP_404_NOT_FOUND
         return {"User Not Found"}
     
