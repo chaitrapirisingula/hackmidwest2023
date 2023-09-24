@@ -3,6 +3,7 @@ import pickle
 import face_recognition
 from collections import Counter
 
+
 DEFAULT_ENCODINGS_PATH = Path("face_recognizer/output/encodings.pkl")
 
 Path("face_recognizer/training").mkdir(exist_ok=True)
