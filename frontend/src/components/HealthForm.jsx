@@ -34,11 +34,13 @@ const HealthForm = () => {
 
   const handleFormSubmit = async () => {
     try {
-      console.log(JSON.stringify({ user: formData }));
+      console.log( formData);
       const endpoint = "http://127.0.0.1:8000/users/api/v1/update/";
+      let user = formData
       await fetch(endpoint, {
           method: "POST",
-          body: JSON.stringify({ user: formData })
+          body: JSON.stringify(user),
+          headers: {'Content-Type': 'application/json'}
       })
       .then(response => response.json())
       .then((data) => { 

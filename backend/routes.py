@@ -10,19 +10,20 @@ router = APIRouter()
 
 @router.post("/api/v1/update/", response_description="Update a user", response_model=User)
 def update_user(request: Request, user: User = Body(...)):
-    user = json.loads(user)
-    print(user)
+    
+    user = json.loads(user.model_dump_json())
     user = {k: v for k, v in user.items() if v is not None}
+    print(user['id'])
     if len(user) >= 1:
-        update_result = request.app.database["users"].update_one({"_id": user._id}, {"$set": user})
+        update_result = request.app.database["users"].update_one({"_id": user['id']}, {"$set": user})
 
-        if update_result.modified_count == 0:
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"User with ID {user._id} not found")
+        #if update_result.modified_count == 0:
+           # raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"User with ID {user['id']} not found")
 
-    if (existing_user := request.app.database["users"].find_one({"_id": user._id})) is not None:
+    if (existing_user := request.app.database["users"].find_one({"_id": user['id']})) is not None:
         return existing_user
 
-    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"User with ID {user._id} not found")
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"User with ID {user['id']} not found!!!")
 
 @router.post("/insert_user", response_description="insert user", response_model=User)
 def insert_user(request: Request, user: User = Body(...)):
