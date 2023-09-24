@@ -7,7 +7,11 @@ const User = ({ patient }) => {
       <Grid.Column>
         <Table celled>
           <Table.Body>
-          <Table.Row>
+            <Table.Row>
+              <Table.Cell><strong>Name</strong></Table.Cell>
+              <Table.Cell>{patient?.firstName + ' ' + patient?.lastName}</Table.Cell>
+            </Table.Row>
+            <Table.Row>
             <Table.Cell><strong>Phone</strong></Table.Cell>
               <Table.Cell>{patient?.phone}</Table.Cell>
             </Table.Row>

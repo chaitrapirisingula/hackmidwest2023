@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useOktaAuth } from '@okta/okta-react';
-import { Button, Header, Icon } from 'semantic-ui-react';
+import { Button, Header, Grid, Icon } from 'semantic-ui-react';
 import User from '../components/User';
 
 const Profile = () => {
@@ -10,6 +10,45 @@ const Profile = () => {
   const { authState, oktaAuth } = useOktaAuth();
   const [userInfo, setUserInfo] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [imageLoading, setImageLoading] = useState(false);
+  const [photoURL, setPhotoURL] = useState('');
+  const [photo, setPhoto] = useState(null);
+  const [success, setSuccess] = useState(false);
+  const [fileName, setFileName] = useState('No file selected.');
+
+  const handleChange = (e) => {
+    if (e.target.files[0]) {
+      setPhoto(e.target.files[0]);
+      setFileName(e.target.files[0].name);
+      setPhotoURL(URL.createObjectURL(e.target.files[0]));
+      setSuccess(false);
+    }
+  }
+
+  const uploadImage = async () => {
+    let formData = new FormData();
+    formData.append('image', photo)
+    
+    try {
+        setImageLoading(true);
+        const endpoint = "http://127.0.0.1:8000/users/api/v1/profile/upload";
+        const response = await fetch(endpoint, {
+            method: "POST",
+            body: formData,
+        })
+        .then(response => response.json())
+        .then((data) => { 
+          console.log(data);
+          setSuccess(true);
+        } );
+
+    } catch(error) {
+      console.error(error);
+      setNoMatch(true);
+    } finally {
+      setImageLoading(false);
+    }
+  }
 
   useEffect(() => {
     if (!authState || !authState.isAuthenticated) {
@@ -66,6 +105,15 @@ const Profile = () => {
         </p>
         {/* send params of user id */}
         <Button content='Edit Information' icon='edit' labelPosition='left' onClick={() => navigate('/edit')}/>
+        <br/><br/>
+        <form className='upload-section' onClick={() => document.querySelector('.input-field').click()}>
+            <input type='file' accept='image/*' className='input-field' onChange={handleChange} hidden/>
+            {photoURL && !success ? <img src={photoURL} alt={fileName} width={156} height={156}/> : <Icon name="upload" size='large' />}
+            {success ? <p>Uploaded!</p> : <></>}
+            {imageLoading ? <p>Loading...</p> : <></>}
+            <p>{fileName}</p>
+        </form>
+        <Button disabled={!photo} content='Upload Image' onClick={uploadImage}/>
         <br/><br/>
         <User patient={userInfo} />
       </div>
