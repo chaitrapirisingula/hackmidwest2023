@@ -30,7 +30,7 @@ const Profile = () => {
   const uploadImage = async () => {
     let formData = new FormData();
     formData.append('image', photo)
-    
+    console.log(photo.name);
     try {
         setImageLoading(true);
         const endpoint = "http://127.0.0.1:8000/users/api/v1/profile/upload";
@@ -75,6 +75,7 @@ const Profile = () => {
         .then(response => response.json())
         .then((data) => { 
           setUserInfo(data);
+          console.log(data.admin);
           if (data.admin === '1') return navigate('/admin');
         });
 
