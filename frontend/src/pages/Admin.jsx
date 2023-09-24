@@ -38,6 +38,7 @@ const Admin = () => {
         .then((data) => { 
           console.log(data);
           setFoundUser(data);
+          
         } );
 
     } catch(error) {
@@ -45,6 +46,7 @@ const Admin = () => {
       setNoMatch(true);
     } finally {
       setLoading(false);
+      console.log(foundUser);
     }
   }
 
@@ -62,17 +64,47 @@ const Admin = () => {
   }, [authState, oktaAuth]); // Update if authState changes
 
   return (
-    <div className='admin'>
-        <h1>Upload Image</h1>
-        <form className='upload-section' onClick={() => document.querySelector('.input-field').click()}>
-            <input type='file' accept='image/*' className='input-field' onChange={handleChange} hidden/>
-            {photoURL ? <img src={photoURL} alt={fileName} width={156} height={156}/> : <Icon name="upload" size='large' />}
-            <p>{fileName}</p>
-        </form>
-        <Button disabled={loading || !photo} onClick={uploadImage}>Find Match</Button>
-        {foundUser ? <User patient={foundUser} /> : <></>}
-        {noMatch ? <h1>No match found.</h1> : <></>}
-    </div>
+    <div className='healthcare-app' style={{ 
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      minHeight: '100vh',
+      flexDirection: 'column',
+      background: '#f0f0f0',
+      boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.2)',
+      borderRadius: '10px',
+  }}>
+      <h1>Upload Medical Image</h1>
+      <form className='upload-section' onClick={() => document.querySelector('.input-field').click()}>
+          <input type='file' accept='image/*' className='input-field' onChange={handleChange} hidden/>
+          {photoURL ? <img src={photoURL} alt={fileName} style={{ maxWidth: '200px', maxHeight: '200px', marginBottom: '20px' }} /> : 
+              <div style={{ width: '200px', height: '200px', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '2px dashed #3498db', borderRadius: '5px' }}>
+                  <Icon name="upload" style={{ fontSize: '4em', color: '#3498db' }} />
+              </div>
+          }
+          {fileName && <p style={{ fontSize: '24px', marginBottom: '10px', marginLeft: '20px'}}>{fileName}</p>}
+      </form>
+      <button style={{ 
+          background: photoURL ? '#3498db' : 'gray', // Set background to gray when no file is uploaded
+          color: 'white',
+          fontSize: '20px',
+          border: 'none',
+          borderRadius: '5px',
+          cursor: photoURL ? 'pointer' : 'not-allowed', // Change cursor based on file selection,
+          marginBottom : "20px"
+          }} 
+          disabled={!photoURL} onClick={uploadImage}>
+          Find Match
+      </button>
+      {foundUser ? <User patient={foundUser} style={{ backgroundColor: 'lightblue', fontSize: '18px', width:'200px' }} /> : <></>}
+      {noMatch ? <p style={{ fontSize: '24px', color: 'red', marginTop: '20px' }}>No match found.</p> : <></>}
+  </div>
+  
+  
+  
+  
+  
+  
   );
 };
 
