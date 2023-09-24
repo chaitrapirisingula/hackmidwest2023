@@ -32,6 +32,12 @@ def insert_user(request: Request, user: User = Body(...)):
     )
     return created_user
 
+@router.get("/{id}", response_description="Get a user by id", response_model=User)
+def find_user(id: str, request: Request):
+    if (user := request.app.database["users"].find_one({"_id": id})) is not None:
+        return user
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"User with ID {id} not found")
+
 @router.post("/api/v1/profile/upload")
 async def upload_image(image: UploadFile):
 
