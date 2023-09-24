@@ -23,6 +23,3 @@ async def test_me():
     print('hello')
 
 app.include_router(user_router, tags=["users"], prefix="/users")
-
-
-

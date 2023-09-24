@@ -24,10 +24,10 @@ class User(BaseModel):
     weight: str = Field(...)
     height: str = Field(...)
     # # list 
-    allergies: str = Field(...)
-    conditions: str = Field(...)
-    surgeries: str = Field(...)
-    medication: str = Field(...)
+    allergies: list[str] = Field(...)
+    conditions: list[str] = Field(...)
+    surgeries: list[str] = Field(...)
+    medication: list[str] = Field(...)
     contact: str = Field(...)
 
     class Config:

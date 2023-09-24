@@ -45,8 +45,7 @@ async def upload_image(image: UploadFile):
         add_image(image.file, img_path[0] )
     except Exception as e:
         print(e)
-        return {"Image Failed To Upload"}
-    
+        return {"Image Failed To Upload"} 
     return {"Image Uploaded Successfully"}
 
 @router.post('/upload_file')
