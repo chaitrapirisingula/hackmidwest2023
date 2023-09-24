@@ -37,6 +37,18 @@ def insert_user(request: Request, user: User = Body(...)):
     )
     return created_user
 
+@router.post("/api/v1/profile/upload")
+async def upload_image(image: UploadFile):
+    
+    try:
+        img_path = image.filename.split(".")
+        add_image(image.file, img_path[0] )
+    except Exception as e:
+        print(e)
+        return {"Image Failed To Upload"}
+    
+    return {"Image Uploaded Successfully"}
+
 @router.post('/upload_file')
 async def upload_image(file_upload: UploadFile):
     print(file_upload)
@@ -49,7 +61,7 @@ async def test_me():
 
 @router.post("/api/v1/profile/upload")
 async def upload_image(image: UploadFile, response: Response, request: Request):
-    
+
     try:
         add_image(image.file, image.filename )
     except Exception as e:
@@ -60,7 +72,7 @@ async def upload_image(image: UploadFile, response: Response, request: Request):
     return {"Image Uploaded Successfully"}
 
 
-@router.post("/api/v1/admin/upload")
+@router.post("/api/v1/profile/admin/upload")
 async def upload_image(image: UploadFile, response: Response, request: Request):
     
     try: 
