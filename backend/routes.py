@@ -26,12 +26,12 @@ def update_user(id: str, request: Request, user):
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"User with ID {id} not found")
 
 
-@router.post("/insert_user", response_description="insert user", response_model=List[User])
-async def insert_user(request: Request, user: User = Body(...)):
+@router.post("/insert_user", response_description="insert user", response_model=User)
+def insert_user(request: Request, user: User = Body(...)):
     user = jsonable_encoder(user)
-    new_user = await request.app.database["users"].insert_one(user)
-    created_user = await request.app.database["users"].find_one(
-        {"_id": new_user.inserted_id}
+    new_user =  request.app.database["users"].insert_one(user)
+    created_user =  request.app.database["users"].find_one(
+       {"_id": new_user.inserted_id}
     )
     return created_user
 

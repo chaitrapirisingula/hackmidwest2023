@@ -61,8 +61,9 @@ class UserUpdate(BaseModel):
     synopsis: Optional[str]
 
     class Config:
+        arbitrary_types_allowed = True
         schema_extra = {
-            "example": {
+            "example": [{
                 "admin" : "0",
                 "firstName": "Chaitra",
                 "lastName": "Pirisingula",
@@ -81,5 +82,5 @@ class UserUpdate(BaseModel):
                 "surgeries":  "...",
                 "medication":  "...",
                 "contact" :"..."
-            }
+            }]
         }
