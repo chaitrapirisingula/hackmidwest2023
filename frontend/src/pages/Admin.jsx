@@ -19,7 +19,7 @@ const Admin = () => {
   const [noMatch, setNoMatch] = useState(false);
 
   if (authState && !authState.isAuthenticated) {
-    return navigate('../profile');
+    return navigate('../');
   }
 
   const handleChange = (e) => {
@@ -36,7 +36,7 @@ const Admin = () => {
     
     try {
         setLoading(true);
-        const endpoint = "http://localhost:8000/upload_file";
+        const endpoint = "http://localhost:8000/api/v1/admin/upload";
         const response = await fetch(endpoint, {
             method: "POST",
             body: formData
@@ -66,7 +66,6 @@ const Admin = () => {
       // get user information from `/userinfo` endpoint
       oktaAuth.getUser().then((info) => {
         setUserInfo(info);
-        if (!info.admin || info.admin == false) return navigate('../profile');
         console.log(userInfo);
       });
     }

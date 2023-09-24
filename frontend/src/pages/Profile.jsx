@@ -8,7 +8,7 @@ const temp = [
   {
     "firstName": "Jack",
     "lastName": "Rankin",
-    "admin": "0",
+    "admin": true,
     "sex": "Male",
     "email": "john.doe@example.com",
     "phone": "+1234567890",
@@ -27,7 +27,7 @@ const temp = [
   {
     "firstName": "Chaitra",
     "lastName": "Pirisingula",
-    "admin": "0",
+    "admin": true,
     "sex": "Female",
     "email": "jane.smith@example.com",
     "phone": "+9876543210",
@@ -62,7 +62,7 @@ const Profile = () => {
       oktaAuth.getUser().then((info) => {
         setUserInfo(info);
         setLoading(false);
-        if (temp[1].admin == true) return navigate('/admin');
+        if (temp[0].admin === true) return navigate('/admin');
       });
     }
   }, [authState, oktaAuth]); // Update if authState changes
