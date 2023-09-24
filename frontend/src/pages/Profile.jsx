@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useOktaAuth } from '@okta/okta-react';
-import { Button, Header, Grid, Icon } from 'semantic-ui-react';
+import { Button, Header, Icon } from 'semantic-ui-react';
 import User from '../components/User';
 
 const Profile = () => {
@@ -9,6 +9,7 @@ const Profile = () => {
 
   const { authState, oktaAuth } = useOktaAuth();
   const [userInfo, setUserInfo] = useState(null);
+
   const [loading, setLoading] = useState(false);
   const [imageLoading, setImageLoading] = useState(false);
   const [photoURL, setPhotoURL] = useState('');
@@ -103,8 +104,10 @@ const Profile = () => {
           Below is your current health information. 
           This information is protected and only accessible to you and medical professionals.
         </p>
-        {/* send params of user id */}
-        <Button content='Edit Information' icon='edit' labelPosition='left' onClick={() => navigate('/edit')}/>
+        <Button content='Edit Information' icon='edit' labelPosition='left' onClick={() => navigate('../../edit', {
+          state: {
+            info: userInfo
+          }})}/>
         <br/><br/>
         <form className='upload-section' onClick={() => document.querySelector('.input-field').click()}>
             <input type='file' accept='image/*' className='input-field' onChange={handleChange} hidden/>

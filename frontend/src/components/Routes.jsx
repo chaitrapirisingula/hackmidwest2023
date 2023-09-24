@@ -6,6 +6,7 @@ import Home from '../pages/Home';
 import Loading from './Loading';
 import Profile from '../pages/Profile';
 import Admin from '../pages/Admin';
+import HealthForm from './HealthForm';
 
 const AppRoutes = () => {
   return (
@@ -14,6 +15,9 @@ const AppRoutes = () => {
       <Route path="login/callback" element={<LoginCallback loadingElement={<Loading/>}/>}/>
       <Route path="/profile" element={<RequiredAuth/>}>
         <Route path="" element={<Profile/>}/>
+      </Route>
+      <Route path="/edit" element={<RequiredAuth/>}>
+        <Route path="" element={<HealthForm/>}/>
       </Route>
       <Route path="/admin" element={<RequiredAuth/>}>
         <Route path="" element={<Admin/>}/>
