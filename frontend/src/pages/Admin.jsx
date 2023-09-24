@@ -39,6 +39,7 @@ const Admin = () => {
     
     try {
         setLoading(true);
+<<<<<<< Updated upstream
         const endpoint = "http://127.0.0.1:8000/users/api/v1/profile/admin/upload";
         const response = await fetch(endpoint, {
             method: "POST",
@@ -48,6 +49,15 @@ const Admin = () => {
         // Verify this!!!!
         console.log(response.json());
         setFoundUser(response);
+=======
+        const endpoint = "http://localhost:8000/users/api/v1/admin/upload";
+        await fetch(endpoint, {
+            method: "POST",
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => setFoundUser(data));
+>>>>>>> Stashed changes
 
         if (!response.ok) {
           console.error('An error occured!');
