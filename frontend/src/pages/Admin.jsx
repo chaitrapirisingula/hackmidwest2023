@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useOktaAuth } from '@okta/okta-react';
 import { Icon } from 'semantic-ui-react';
+import User from '../components/User';
 
 const Admin = () => {
   const { authState, oktaAuth } = useOktaAuth();
+  const [userInfo, setUserInfo] = useState(false);
 
   const [loading, setLoading] = useState(false);
   const [photoURL, setPhotoURL] = useState('');
   const [photo, setPhoto] = useState(null);
   const [fileName, setFileName] = useState('No file selected.');
+  const [foundUser, setFoundUser] = useState(null);
+  const [noMatch, setNoMatch] = useState(false);
 
   const handleChange = (e) => {
     if (e.target.files[0]) {
@@ -18,7 +22,7 @@ const Admin = () => {
     }
   }
 
-  const handleClick = async () => {
+  const uploadImage = async () => {
     const formData = new FormData();
     formData.append('file_upload', photo)
     
@@ -29,13 +33,18 @@ const Admin = () => {
             method: "POST",
             body: formData
         });
+        // Verify this!!!!
+        console.log(response);
+        setFoundUser(response);
 
         if (!response.ok) {
-            console.error('An error occured!');
+          console.error('An error occured!');
+          setNoMatch(true);
         }
 
     } catch(error) {
-      console.error(error)
+      console.error(error);
+      setNoMatch(true);
     } finally {
         setLoading(false);
     }
@@ -44,34 +53,27 @@ const Admin = () => {
   useEffect(() => {
     if (!authState || !authState.isAuthenticated) {
       // When user isn't authenticated, forget any user info
-    //   setUserInfo(null);
+      setUserInfo(null);
     } else {
-      // get name and id from this 
-      // setUserInfo(authState.idToken.claims);
       // get user information from `/userinfo` endpoint
-      /*oktaAuth.getUser().then((info) => {
+      oktaAuth.getUser().then((info) => {
         setUserInfo(info);
-      });*/
+        console.log(userInfo);
+      });
     }
   }, [authState, oktaAuth]); // Update if authState changes
-
-//   if (!userInfo) {
-//     return (
-//       <div>
-//         <p>Fetching user profile...</p>
-//       </div>
-//     );
-//   }
 
   return (
     <div className='admin'>
         <h1>Upload Image</h1>
         <form className='upload-section' onClick={() => document.querySelector('.input-field').click()}>
             <input type='file' accept='image/*' className='input-field' onChange={handleChange} hidden/>
-            {photoURL ? <img src={photoURL} alt={fileName} width={156} height={156}/> : <Icon name="upload large" />}
+            {photoURL ? <img src={photoURL} alt={fileName} width={156} height={156}/> : <Icon name="upload" size='large' />}
             <p>{fileName}</p>
         </form>
-        <button disabled={loading || !photo} onClick={handleClick}>Find Match</button>
+        <button disabled={loading || !photo} onClick={uploadImage}>Find Match</button>
+        {foundUser ? <User data={foundUser} /> : <></>}
+        {noMatch ? <h1>No match found.</h1> : <></>}
     </div>
   );
 };
