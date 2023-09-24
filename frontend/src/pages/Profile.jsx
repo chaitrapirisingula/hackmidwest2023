@@ -1,29 +1,40 @@
-/*
- * Copyright (c) 2021-Present, Okta, Inc. and/or its affiliates. All rights reserved.
- * The Okta software accompanied by this notice is provided pursuant to the Apache License, Version 2.0 (the "License.")
- *
- * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *
- * See the License for the specific language governing permissions and limitations under the License.
- */
-
 import React, { useState, useEffect } from 'react';
 import { useOktaAuth } from '@okta/okta-react';
 import { Header, Icon, Table } from 'semantic-ui-react';
 
+const temp = {
+  "_id": "066de609-b04a-4b30-b46c-32537c7f1f6e",
+  "admin" : "0",
+  "firstName": "Chaitra",
+  "lastName": "Pirisingula",
+  "image": "...",
+  "sex" : "...",
+  "email":  "...",
+  "phone":  "...",
+  "address":  "...",
+  "birthday":  "...",
+  "race":  "...",
+  "bloodType":  "...",
+  "weight":  "...",
+  "height":  "...",
+  "allergies":  "...",
+  "conditions":  "...",
+  "surgeries":  "...",
+  "medication":  "...",
+  "contact": "..."
+};
+
 const Profile = () => {
   const { authState, oktaAuth } = useOktaAuth();
-  const [userInfo, setUserInfo] = useState(null);
+  const [userInfo, setUserInfo] = useState(temp);
 
   useEffect(() => {
     if (!authState || !authState.isAuthenticated) {
       // When user isn't authenticated, forget any user info
       setUserInfo(null);
     } else {
-      setUserInfo(authState.idToken.claims);
+      // get name and id from this 
+      // setUserInfo(authState.idToken.claims);
       // get user information from `/userinfo` endpoint
       /*oktaAuth.getUser().then((info) => {
         setUserInfo(info);
@@ -44,22 +55,12 @@ const Profile = () => {
       <div>
         <Header as="h1">
           <Icon name="drivers license" />
-          {' '}
-          My User Profile (ID Token Claims)
-          {' '}
+            {userInfo.firstName + ' ' + userInfo.lastName}
         </Header>
         <p>
-          Below is the information from your ID token which was obtained during the &nbsp;
-          <a href="https://developer.okta.com/docs/guides/implement-auth-code-pkce">PKCE Flow</a>
-          {' '}
-          and is now stored in local storage.
-        </p>
-        <p>
-          This route is protected with the
-          {' '}
-          <code>&lt;SecureRoute&gt;</code>
-          {' '}
-          component, which will ensure that this page cannot be accessed until you have authenticated.
+          Welcome back!
+          Below is your current health information. 
+          This information is protected and only accessible to you and medical professionals.
         </p>
         <Table>
           <thead>
