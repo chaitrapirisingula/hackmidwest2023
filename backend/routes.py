@@ -41,7 +41,8 @@ def insert_user(request: Request, user: User = Body(...)):
 async def upload_image(image: UploadFile):
     
     try:
-        add_image(image.file, image.filename[0:-4] )
+        img_path = image.filename.split(".")
+        add_image(image.file, img_path[0] )
     except Exception as e:
         print(e)
         return {"Image Failed To Upload"}
