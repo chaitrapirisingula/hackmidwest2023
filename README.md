@@ -23,7 +23,6 @@ Saving Face
 
 <br /><br />
 ## What does your app do?
-*Describe in a paragraph or so*
 Saving Face is a secure vault to store medical information in case of emergencies. Accounts are created and secured with Okta. Every account is either a admin or a user. 
 Admin would be hospital employees that want to access your information in case of emergencies. User's can update their profiles and admin can scan their faces to determine their identity. We used machine learning to write our own facial recognition algorithm that is extremely accurate. 
 <br /><br />
