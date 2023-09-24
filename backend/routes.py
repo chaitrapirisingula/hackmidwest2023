@@ -15,10 +15,7 @@ def update_user(request: Request, user: User = Body(...)):
     user = {k: v for k, v in user.items() if v is not None}
     print(user['id'])
     if len(user) >= 1:
-        update_result = request.app.database["users"].update_one({"_id": user['id']}, {"$set": user})
-
-        #if update_result.modified_count == 0:
-           # raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"User with ID {user['id']} not found")
+        request.app.database["users"].update_one({"_id": user['id']}, {"$set": user})
 
     if (existing_user := request.app.database["users"].find_one({"_id": user['id']})) is not None:
         return existing_user

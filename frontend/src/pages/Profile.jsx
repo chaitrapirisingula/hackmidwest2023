@@ -33,7 +33,7 @@ const Profile = () => {
     try {
         setImageLoading(true);
         const endpoint = "http://127.0.0.1:8000/users/api/v1/profile/upload";
-        const response = await fetch(endpoint, {
+        await fetch(endpoint, {
             method: "POST",
             body: formData,
         })

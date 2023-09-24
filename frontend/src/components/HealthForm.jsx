@@ -45,7 +45,7 @@ const HealthForm = () => {
       .then(response => response.json())
       .then((data) => { 
         console.log(data);
-        // return navigate('../../profile');
+        return navigate('../../profile');
       });
     } catch(error) {
       console.error(error);
