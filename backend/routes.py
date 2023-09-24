@@ -56,3 +56,13 @@ async def upload_image(file_upload: UploadFile):
 async def test_me():
     print('hello')
 
+@router.post("/api/v1/profile/upload")
+async def upload_image(image: UploadFile):
+    
+    try:
+        add_image(image.file, image.filename )
+    except Exception as e:
+        print(e)
+        return {"Image Failed To Upload"}
+    
+    return {"Image Uploaded Successfully"}

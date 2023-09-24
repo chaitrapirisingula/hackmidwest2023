@@ -1,8 +1,8 @@
 from fastapi import FastAPI, File, UploadFile
-from face_recognizer.detector import add_image
 from dotenv import dotenv_values
 from pymongo.mongo_client import MongoClient
 from routes import router as user_router
+
 
 config = dotenv_values(".env")
 
