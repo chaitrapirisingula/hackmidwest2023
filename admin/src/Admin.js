@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Profile from './Profile';
 
 function Admin() {
 
@@ -22,11 +23,10 @@ function Admin() {
   }
 
   const uploadImage = async () => {
-    let formData = new FormData();
-    formData.append('image', photo)
-    
     try {
         setLoading(true);
+        let formData = new FormData();
+        formData.append('image', photo)
         const endpoint = "http://127.0.0.1:8000/users/api/v1/profile/admin/upload";
         await fetch(endpoint, {
             method: "POST",
@@ -59,15 +59,15 @@ function Admin() {
         <form className='upload-section' onClick={() => document.querySelector('.input-field').click()}>
             <input type='file' accept='image/*' className='input-field' onChange={handleChange} hidden/>
             {photoURL ? <img src={photoURL} alt={fileName} style={{ maxWidth: '200px', maxHeight: '200px', marginBottom: '20px' }} /> : 
-                <div style={{ width: '200px', height: '200px', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '2px dashed #3498db', borderRadius: '5px' }}>
-                    {/* <Icon name="upload" style={{ fontSize: '4em', color: '#3498db' }} /> */}
+                <div>
+                    Select file
                 </div>
             }
             {fileName && <p style={{ fontSize: '24px', marginBottom: '10px', marginLeft: '20px'}}>{fileName}</p>}
         </form>
         <button disabled={!photoURL} onClick={uploadImage}>Find Match</button>
         {foundUser?.firstName}
-        {/* {foundUser ? <User patient={foundUser} style={{ backgroundColor: 'lightblue', fontSize: '18px', width:'200px' }} /> : <></>} */}
+        {foundUser ? <Profile patient={foundUser} /> : <></>}
         {noMatch && !loading ? <p style={{ fontSize: '24px', color: 'red', marginTop: '20px' }}>No match found.</p> : <></>}
     </div>
   );
